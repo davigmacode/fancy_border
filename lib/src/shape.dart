@@ -198,6 +198,6 @@ class FancyBorder extends ShapeBorder {
 
   @override
   String toString() {
-    return '${objectRuntimeType(this, 'FancyBorder')}($shape)';
+    return '${objectRuntimeType(this, 'FancyBorder')}($shape, $style, $color, $gradient, $width, $offset)';
   }
 }
