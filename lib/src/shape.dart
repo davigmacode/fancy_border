@@ -22,6 +22,7 @@ class FancyBorder extends ShapeBorder {
     this.gradient,
     this.width,
     this.offset,
+    this.corners,
   }) : assert(width == null || width >= 0);
 
   final OutlinedBorder? shape;
@@ -37,9 +38,11 @@ class FancyBorder extends ShapeBorder {
 
   final double? offset;
 
+  final BorderRadiusGeometry? corners;
+
   OutlinedBorder get effectiveShape {
-    final actualShape = shape ?? const RoundedRectangleBorder();
-    return actualShape.copyWith(
+    OutlinedBorder actualShape = shape ?? const RoundedRectangleBorder();
+    actualShape = actualShape.copyWith(
       side: actualShape.side.copyWith(
         style: style == FancyBorderStyle.solid
             ? BorderStyle.solid
@@ -49,6 +52,16 @@ class FancyBorder extends ShapeBorder {
         strokeAlign: offset,
       ),
     );
+
+    if (actualShape is RoundedRectangleBorder) {
+      actualShape = actualShape.copyWith(borderRadius: corners);
+    } else if (actualShape is ContinuousRectangleBorder) {
+      actualShape = actualShape.copyWith(borderRadius: corners);
+    } else if (actualShape is BeveledRectangleBorder) {
+      actualShape = actualShape.copyWith(borderRadius: corners);
+    }
+
+    return actualShape;
   }
 
   @override
@@ -93,6 +106,12 @@ class FancyBorder extends ShapeBorder {
 
     final offset = side.strokeOffset / 2;
     final borderRect = rect.inflate(offset);
+
+    // if (preferPaintInterior) {
+    //   paintInterior(canvas, rect, paint);
+    //   return;
+    // }
+
     final path = getOuterPath(borderRect);
 
     final nonSolidPath = getNonSolidPath(
@@ -190,14 +209,16 @@ class FancyBorder extends ShapeBorder {
         other.color == color &&
         other.gradient == gradient &&
         other.width == width &&
-        other.offset == offset;
+        other.offset == offset &&
+        other.corners == corners;
   }
 
   @override
-  int get hashCode => Object.hash(shape, style, color, gradient, width, offset);
+  int get hashCode =>
+      Object.hash(shape, style, color, gradient, width, offset, corners);
 
   @override
   String toString() {
-    return '${objectRuntimeType(this, 'FancyBorder')}($shape, $style, $color, $gradient, $width, $offset)';
+    return '${objectRuntimeType(this, 'FancyBorder')}($shape, $style, $color, $gradient, $width, $offset, $offset)';
   }
 }
