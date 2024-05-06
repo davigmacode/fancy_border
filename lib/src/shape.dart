@@ -107,18 +107,24 @@ class FancyBorder extends ShapeBorder {
     final offset = side.strokeOffset / 2;
     final borderRect = rect.inflate(offset);
 
-    // if (preferPaintInterior) {
-    //   paintInterior(canvas, rect, paint);
-    //   return;
-    // }
+    if (preferPaintInterior && style == FancyBorderStyle.solid) {
+      paintInterior(canvas, borderRect, paint);
+      return;
+    }
 
-    final path = getOuterPath(borderRect);
-
-    final nonSolidPath = getNonSolidPath(
-      path,
+    Path path = getOuterPath(
+      borderRect,
       textDirection: textDirection,
     );
-    canvas.drawPath(nonSolidPath, paint);
+
+    if (style != FancyBorderStyle.solid) {
+      path = getNonSolidPath(
+        path,
+        textDirection: textDirection,
+      );
+    }
+
+    canvas.drawPath(path, paint);
   }
 
   /// Returns a copy of this OutlinedBorder that draws its outline with the
@@ -146,7 +152,7 @@ class FancyBorder extends ShapeBorder {
     final sideWidth = effectiveShape.side.width;
     for (final PathMetric metric in source.computeMetrics()) {
       int index = 0;
-      double distance = style.offset * metric.length;
+      double distance = 0;
       bool draw = true;
       while (distance < metric.length) {
         if (index >= style.pattern.length) {
