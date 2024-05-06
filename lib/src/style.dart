@@ -3,9 +3,6 @@ import 'package:flutter/foundation.dart';
 
 /// A class representing a fancy border style for widgets.
 ///
-/// This class allows you to define a custom border style for your widgets
-/// with features like patterns, offsets, and absolute positioning.
-///
 /// You can create custom border styles using the constructor or
 /// use the built-in constant styles like `solid`, `dotted`, `dashed`,
 /// and `morse`.
@@ -17,14 +14,10 @@ class FancyBorderStyle with Diagnosticable {
   /// * `pattern`: A list of doubles representing the on/off durations of the
   ///   border pattern. A value of `1` represents "on," and other values
   ///   represent "off."
-  /// * `offset` (default: `0.0`): The starting point of the pattern within
-  ///   the border cycle. A value of `0.0` starts at the beginning, while
-  ///   higher values shift the pattern to the right.
   /// * `absolute` (default: `false`): Whether the pattern's position is
   ///   relative to the border width (false) or absolute value (true).
   const FancyBorderStyle(
     this.pattern, {
-    this.offset = 0,
     this.absolute = false,
   });
 
@@ -42,9 +35,6 @@ class FancyBorderStyle with Diagnosticable {
 
   /// The list of doubles defining the on/off durations of the border pattern.
   final List<double> pattern;
-
-  /// The starting point of the pattern within the border cycle.
-  final double offset;
 
   /// Whether the pattern's value is relative to border width value or absolute value.
   final bool absolute;
@@ -80,7 +70,6 @@ class FancyBorderStyle with Diagnosticable {
               ) ??
               0,
       ],
-      offset: lerpDouble(a.offset, b.offset, t) ?? 0,
       absolute: t < 0.5 ? a.absolute : b.absolute,
     );
   }
@@ -95,18 +84,16 @@ class FancyBorderStyle with Diagnosticable {
     }
     return other is FancyBorderStyle &&
         listEquals(other.pattern, pattern) &&
-        other.offset == offset &&
         other.absolute == absolute;
   }
 
   @override
-  int get hashCode => Object.hash(pattern, offset, absolute);
+  int get hashCode => Object.hash(pattern, absolute);
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(IterableProperty('pattern', pattern));
-    properties.add(DoubleProperty('offset', offset));
     properties.add(DiagnosticsProperty<bool>('absolute', absolute));
   }
 }
