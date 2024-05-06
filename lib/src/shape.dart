@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'style.dart';
 
-//// A custom Flutter border class that allows for drawing fancy borders
+/// A custom Flutter border class that allows for drawing fancy borders
 /// with gradients and patterns, while still supporting built-in shape borders.
 ///
 /// This class provides a way to create borders with more flexibility than
