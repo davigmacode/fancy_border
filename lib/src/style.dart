@@ -1,7 +1,8 @@
 import 'dart:ui' show lerpDouble;
-import 'package:flutter/foundation.dart' show listEquals;
+import 'package:flutter/foundation.dart';
 
-class FancyBorderStyle {
+@immutable
+class FancyBorderStyle with Diagnosticable {
   const FancyBorderStyle(
     this.pattern, {
     this.offset = 0,
@@ -17,7 +18,7 @@ class FancyBorderStyle {
   final double offset;
   final bool absolute;
 
-  bool get isSolid => pattern.isEmpty;
+  bool get isSolid => listEquals(pattern, FancyBorderStyle.solid.pattern);
 
   bool get isNonSolid => !isSolid;
 
@@ -58,4 +59,12 @@ class FancyBorderStyle {
 
   @override
   int get hashCode => Object.hash(pattern, offset, absolute);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(IterableProperty('pattern', pattern));
+    properties.add(DoubleProperty('offset', offset));
+    properties.add(DiagnosticsProperty<bool>('absolute', absolute));
+  }
 }
