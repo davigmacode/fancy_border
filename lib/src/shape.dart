@@ -1,20 +1,33 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:ui' show PathMetric;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 import 'style.dart';
 
-/// A WxShapeBorder that draws an outline with the width and color specified
-/// by [side].
+//// A custom Flutter border class that allows for drawing fancy borders
+/// with gradients and patterns, while still supporting built-in shape borders.
+///
+/// This class provides a way to create borders with more flexibility than
+/// the standard `OutlinedBorder` class. It supports solid borders, gradients,
+/// and patterns like dotted or dashed lines.
 @immutable
 class FancyBorder extends ShapeBorder {
-  /// Abstract const constructor. This constructor enables subclasses to provide
-  /// const constructors so that they can be used in const expressions.
+  /// Creates a new instance of [FancyBorder].
   ///
-  /// The value of [side] must not be null.
+  /// The `shape` argument defines the underlying shape of the border.
+  /// Defaults to a `RoundedRectangleBorder`.
+  ///
+  /// The `style` argument defines the style of the border.
+  /// Defaults to [FancyBorderStyle.solid].
+  ///
+  /// The `color` argument defines the color of the border.
+  ///
+  /// The `gradient` argument defines the gradient to use for the border.
+  ///
+  /// The `width` argument defines the width of the border.
+  ///
+  /// The `offset` argument defines the offset of the border stroke.
+  ///
+  /// The `corners` argument defines the corner radius of the border.
   const FancyBorder({
     this.shape,
     this.style = FancyBorderStyle.solid,
@@ -25,21 +38,28 @@ class FancyBorder extends ShapeBorder {
     this.corners,
   }) : assert(width == null || width >= 0);
 
+  /// The underlying border shape.
   final OutlinedBorder? shape;
 
+  /// The style of the border.
   final FancyBorderStyle style;
 
-  /// The color of this side of the border.
+  /// The color of the border.
   final Color? color;
 
+  /// The gradient to use for the border.
   final Gradient? gradient;
 
+  /// The width of the border.
   final double? width;
 
+  /// The offset of the border stroke.
   final double? offset;
 
+  /// The corner radius of the border.
   final BorderRadiusGeometry? corners;
 
+  /// Returns the effective border shape after considering all properties.
   OutlinedBorder get effectiveShape {
     OutlinedBorder actualShape = shape ?? const RoundedRectangleBorder();
     actualShape = actualShape.copyWith(
@@ -127,8 +147,12 @@ class FancyBorder extends ShapeBorder {
     canvas.drawPath(path, paint);
   }
 
-  /// Returns a copy of this OutlinedBorder that draws its outline with the
-  /// specified [side], if [side] is non-null.
+  /// Creates a copy of this [FancyBorder] object with potentially overridden
+  /// properties.
+  ///
+  /// Returns a new [FancyBorder] object with the given parameters overridden.
+  /// This method is useful for expressing small variations of an existing
+  /// [FancyBorder] object.
   FancyBorder copyWith({
     OutlinedBorder? shape,
     FancyBorderStyle? style,
@@ -147,6 +171,17 @@ class FancyBorder extends ShapeBorder {
     );
   }
 
+  /// Calculates the path for a non-solid border style (e.g. dotted or
+  /// dashed).
+  ///
+  /// This method iterates over the [style.pattern] to create a path with
+  /// gaps according to the pattern.
+  ///
+  /// Arguments:
+  ///   * `source`: The source path to be modified.
+  ///   * `textDirection`: The text direction for drawing the path.
+  ///
+  /// Returns a new path object representing the non-solid border.
   Path getNonSolidPath(Path source, {TextDirection? textDirection}) {
     final Path dest = Path();
     final sideWidth = effectiveShape.side.width;
