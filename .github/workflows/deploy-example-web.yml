@@ -44,7 +44,7 @@ jobs:
       working-directory: ./example
       run: |
         flutter pub get
-        flutter build web --release --base-href="/flutter_fancy_border/"
+        flutter build web --release --wasm --base-href="/flutter_fancy_border/"
     - name: Upload production-ready build example
       uses: actions/upload-pages-artifact@v2
       with:

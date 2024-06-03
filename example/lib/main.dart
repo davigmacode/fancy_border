@@ -36,7 +36,7 @@ class MyHomePage extends StatelessWidget {
               'FancyBorder',
               fontWeight: FontWeight.bold,
               outlineColor: Colors.white,
-              outlineWidth: 1.5,
+              outlineWidth: .5,
               shadows: [
                 Shadow(
                   color: Colors.green,
