@@ -1,6 +1,6 @@
 name: fancy_border
 description: Seamlessly integrates with existing Flutter shape borders. Configurable the underlying shape while adding the desired gradient or pattern effect.
-version: 0.0.1
+version: 0.0.2
 homepage: https://github.com/davigmacode/flutter_fancy_border
 
 topics:

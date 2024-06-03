@@ -1,5 +1,5 @@
 {
-  "dart.flutterSdkPath": ".fvm\\versions\\3.19.3",
+  "dart.flutterSdkPath": ".fvm\\versions\\3.22.0",
   "search.exclude": {
     "**/.fvm": true
   },
@@ -19,6 +19,7 @@
     "lerp",
     "lerped",
     "LTWH",
+    "pote",
     "Taufik",
     "Vigma",
     "widgetarian"
